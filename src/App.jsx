@@ -1,5 +1,6 @@
 import 'bulma/css/bulma.css';
 import { useState } from 'react';
+import classNames from 'classnames';
 import './App.scss';
 
 export const goods = [
@@ -17,8 +18,11 @@ export const goods = [
 
 export const App = () => {
   const [selectedGood, setSelectedGood] = useState('Jam');
-  const handleSelect = value => {
-    setSelectedGood(value);
+  const title = selectedGood
+    ? `${selectedGood} is selected`
+    : 'No goods selected';
+  const handleSelect = good => {
+    setSelectedGood(good);
   };
 
   const reset = () => {
@@ -28,7 +32,7 @@ export const App = () => {
   return (
     <main className="section container">
       <h1 className="title is-flex is-align-items-center">
-        {selectedGood ? `${selectedGood} is selected` : 'No goods selected'}
+        {title}
         {selectedGood && (
           <button
             data-cy="ClearButton"
@@ -41,16 +45,16 @@ export const App = () => {
 
       <table className="table">
         <tbody>
-          {goods.map(value => (
+          {goods.map(good => (
             <tr
-              key={value}
+              key={good}
               data-cy="Good"
-              className={
-                selectedGood === value ? 'has-background-success-light' : ''
-              }
+              className={classNames(
+                selectedGood === good ? 'has-background-success-light' : '',
+              )}
             >
               <td>
-                {selectedGood === value ? (
+                {selectedGood === good ? (
                   <button
                     data-cy="RemoveButton"
                     type="button"
@@ -64,14 +68,14 @@ export const App = () => {
                     data-cy="AddButton"
                     type="button"
                     className="button"
-                    onClick={() => handleSelect(value)}
+                    onClick={() => handleSelect(good)}
                   >
                     +
                   </button>
                 )}
               </td>
               <td data-cy="GoodTitle" className="is-vcentered">
-                {value}
+                {good}
               </td>
             </tr>
           ))}
